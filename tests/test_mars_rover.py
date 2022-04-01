@@ -22,6 +22,7 @@ class TestKata(unittest.TestCase):
         ["RR", "0:0:S", ],
         ["RRR", "0:0:W", ],
         ["RRRR", "0:0:N", ],
+        ["RRRRR", "0:0:E", ],
     ])
     def test_given_a_mars_rover_when_executing_a_right_rotate_command_should_rotate(self, rotate_right_command, expected):
         rover = MarsRover()
@@ -32,6 +33,8 @@ class TestKata(unittest.TestCase):
         ["L", "0:0:W", ],
         ["LL", "0:0:S", ],
         ["LLL", "0:0:E", ],
+        ["LLLL", "0:0:N", ],
+        ["LLLLL", "0:0:W", ],
     ])
     def test_given_a_mars_rover_when_executing_a_left_rotate_command_should_rotate(self, rotate_left_command, expected):
         rover = MarsRover()
