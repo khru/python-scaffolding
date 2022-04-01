@@ -17,10 +17,14 @@ class TestKata(unittest.TestCase):
         state = rover.execute(command)
         self.assertEqual(expected, state)
 
-    def test_given_a_mars_rover_when_executing_a_rotate_R_command_should_move(self):
+    @parameterized.expand([
+        ["R", "0:0:E", ],
+        ["RR", "0:0:S", ],
+    ])
+    def test_given_a_mars_rover_when_executing_a_rotate_command_should_rotate(self, rotate_command, expected):
         rover = MarsRover()
-        state = rover.execute('R')
-        self.assertEqual("0:0:E", state)
+        state = rover.execute(rotate_command)
+        self.assertEqual(expected, state)
 
 if __name__ == '__main__':
     unittest.main()
