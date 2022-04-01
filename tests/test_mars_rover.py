@@ -62,6 +62,7 @@ class TestKata(unittest.TestCase):
         ["MMLL", "0:2:S", ],
         ["MMMMMMMMMMLL", "0:0:S", ],
         ["RM", "1:0:E", ],
+        ["RRM", "9:0:S", ],
     ])
     def test_given_a_mars_rover_when_executing_a_mixed_rotate_and_move_command_should_rotate_and_move(self, mixed_rotate_move_command, expected):
         rover = MarsRover()
