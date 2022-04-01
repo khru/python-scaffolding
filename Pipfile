@@ -10,6 +10,7 @@ flake8 = "*"
 mypy = "*"
 sniffer = "*"
 pyinotify = "*"
+parameterized = "*"
 
 [requires]
 python_version = "3.9"
