@@ -23,15 +23,19 @@ class TestKata(unittest.TestCase):
         ["RRR", "0:0:W", ],
         ["RRRR", "0:0:N", ],
     ])
-    def test_given_a_mars_rover_when_executing_a_right_rotate_command_should_rotate(self, rotate_command, expected):
+    def test_given_a_mars_rover_when_executing_a_right_rotate_command_should_rotate(self, rotate_right_command, expected):
         rover = MarsRover()
-        state = rover.execute(rotate_command)
+        state = rover.execute(rotate_right_command)
         self.assertEqual(expected, state)
 
-    def test_given_a_mars_rover_when_executing_a_left_rotate_command_should_rotate(self):
+    @parameterized.expand([
+        ["L", "0:0:W", ],
+        ["LL", "0:0:S", ],
+    ])
+    def test_given_a_mars_rover_when_executing_a_left_rotate_command_should_rotate(self, rotate_left_command, expected):
         rover = MarsRover()
-        state = rover.execute('L')
-        self.assertEqual('0:0:W', state)
+        state = rover.execute(rotate_left_command)
+        self.assertEqual(expected, state)
 
 if __name__ == '__main__':
     unittest.main()
