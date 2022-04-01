@@ -14,6 +14,10 @@ class TestKata(unittest.TestCase):
         state = rover.execute('M')
         self.assertEqual('0:1:N', state)
 
+    def test_given_a_mars_rover_when_executing_MM_command_should_move_to_0_2_N(self):
+        rover = MarsRover()
+        state = rover.execute('MM')
+        self.assertEqual('0:2:N', state)
 
 if __name__ == '__main__':
     unittest.main()
