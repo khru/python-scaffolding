@@ -1,6 +1,6 @@
 class Compass:
     __compass = ['N', 'E', 'S', 'W']
- 
+
     def __init__(self):
         self.__orientation = 0
 
@@ -12,7 +12,7 @@ class Compass:
 
     def orientation(self):
         return self.__compass[self.__orientation]
-    
+
 
 class MarsRover:
     __PLATEAU_SIZE = 10
@@ -21,11 +21,12 @@ class MarsRover:
         self.__compass = Compass()
 
     def execute(self, commands: str):
-        if commands.startswith('M'):
-            return '0:' + str(len(commands) % self.__PLATEAU_SIZE) + ':N'
+        column: int = 0
         for command in commands:
+            if command == 'M':
+                column = ((column + 1) % self.__PLATEAU_SIZE)
             if command == 'L':
                 self.__compass.rotate_left()
             if command == 'R':
                 self.__compass.rotate_right()
-        return '0:0:' + self.__compass.orientation()
+        return '0:' + str(column) + ':' + self.__compass.orientation()

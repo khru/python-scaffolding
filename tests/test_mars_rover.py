@@ -57,7 +57,7 @@ class TestKata(unittest.TestCase):
         self.assertEqual(expected, state)
 
     @parameterized.expand([
-        ["RM", "1:0:E", ],
+        ["MR", "0:1:E", ],
     ])
     def test_given_a_mars_rover_when_executing_a_mixed_rotate_and_move_command_should_rotate_and_move(self, mixed_rotate_move_command, expected):
         rover = MarsRover()
