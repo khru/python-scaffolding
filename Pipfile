@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "smelly-tic-tac-toe"
+
+[packages]
+
+[dev-packages]
+flake8 = "*"
+mypy = "*"
+sniffer = "*"
+pyinotify = "*"
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+test = "python -m unittest discover -s tests"
+test-watch = "sniffer -x--verbose -x--with-doctest"
