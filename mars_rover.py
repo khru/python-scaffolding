@@ -22,11 +22,17 @@ class MarsRover:
 
     def execute(self, commands: str):
         column: int = 0
+        row: int = 0
+        column_increment: int = 1
+        row_increment: int = 0
         for command in commands:
             if command == 'M':
-                column = ((column + 1) % self.__PLATEAU_SIZE)
+                column = ((column + column_increment) % self.__PLATEAU_SIZE)
+                row = ((row + row_increment) % self.__PLATEAU_SIZE)
             if command == 'L':
                 self.__compass.rotate_left()
             if command == 'R':
                 self.__compass.rotate_right()
-        return '0:' + str(column) + ':' + self.__compass.orientation()
+                column_increment = 0
+                row_increment = 1
+        return str(row) + ':' + str(column) + ':' + self.__compass.orientation()
