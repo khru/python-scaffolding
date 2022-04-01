@@ -41,5 +41,14 @@ class TestKata(unittest.TestCase):
         state = rover.execute(rotate_left_command)
         self.assertEqual(expected, state)
 
+    @parameterized.expand([
+        ["LR", "0:0:N", ],
+        ["RL", "0:0:N", ],
+    ])
+    def test_given_a_mars_rover_when_executing_a_mixed_rotate_command_should_rotate(self, mixed_rotate_command, expected):
+        rover = MarsRover()
+        state = rover.execute(mixed_rotate_command)
+        self.assertEqual(expected, state)
+
 if __name__ == '__main__':
     unittest.main()
