@@ -44,10 +44,24 @@ class TestKata(unittest.TestCase):
     @parameterized.expand([
         ["LR", "0:0:N", ],
         ["RL", "0:0:N", ],
+        ["LRR", "0:0:E", ],
+        ["RLL", "0:0:W", ],
+        ["LLR", "0:0:W", ],
+        ["RRL", "0:0:E", ],
+        ["RLLL", "0:0:S", ],
+        ["LRRR", "0:0:S", ],
     ])
     def test_given_a_mars_rover_when_executing_a_mixed_rotate_command_should_rotate(self, mixed_rotate_command, expected):
         rover = MarsRover()
         state = rover.execute(mixed_rotate_command)
+        self.assertEqual(expected, state)
+
+    @parameterized.expand([
+        ["RM", "1:0:E", ],
+    ])
+    def test_given_a_mars_rover_when_executing_a_mixed_rotate_and_move_command_should_rotate_and_move(self, mixed_rotate_move_command, expected):
+        rover = MarsRover()
+        state = rover.execute(mixed_rotate_move_command)
         self.assertEqual(expected, state)
 
 if __name__ == '__main__':
