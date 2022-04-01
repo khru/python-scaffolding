@@ -5,6 +5,8 @@ from mars_rover import MarsRover
 
 
 class TestKata(unittest.TestCase):
+
+
     @parameterized.expand([
         ["", "0:0:N", ],
         ["M", "0:1:N", ],
@@ -57,17 +59,19 @@ class TestKata(unittest.TestCase):
         self.assertEqual(expected, state)
 
     @parameterized.expand([
-        ["MR", "0:1:E", ],
-        ["MMR", "0:2:E", ],
-        ["MMLL", "0:2:S", ],
-        ["MMMMMMMMMMLL", "0:0:S", ],
-        ["RM", "1:0:E", ],
-        ["RRM", "9:0:S", ],
+        ["Ñ", ],
+        ["?", ],
+        ["c", ],
+        ["v", ],
     ])
-    def test_given_a_mars_rover_when_executing_a_mixed_rotate_and_move_command_should_rotate_and_move(self, mixed_rotate_move_command, expected):
+    def test_given_a_mars_rover_when_executing_a_unknown_command_should_rise_an_exception(self, unknown_command):
         rover = MarsRover()
-        state = rover.execute(mixed_rotate_move_command)
-        self.assertEqual(expected, state)
+        with self.assertRaises(TypeError) as context:
+            rover.execute(unknown_command)
+
+        self.assertTrue('Invalid command' in str(context.exception))
+
+
 
 if __name__ == '__main__':
     unittest.main()

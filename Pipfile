@@ -4,6 +4,8 @@ verify_ssl = true
 name = "smelly-tic-tac-toe"
 
 [packages]
+rise = "*"
+mymod = "*"
 
 [dev-packages]
 flake8 = "*"
