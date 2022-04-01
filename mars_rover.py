@@ -1,4 +1,4 @@
-class Compass:
+class _Compass:
     __compass = ['N', 'E', 'S', 'W']
 
     def __init__(self):
@@ -18,7 +18,7 @@ class MarsRover:
     __PLATEAU_SIZE = 10
 
     def __init__(self):
-        self.__compass = Compass()
+        self.__compass = _Compass()
 
     def execute(self, commands: str):
         column: int = 0
