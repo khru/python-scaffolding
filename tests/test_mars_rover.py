@@ -20,6 +20,7 @@ class TestKata(unittest.TestCase):
     @parameterized.expand([
         ["R", "0:0:E", ],
         ["RR", "0:0:S", ],
+        ["RRR", "0:0:W", ],
     ])
     def test_given_a_mars_rover_when_executing_a_rotate_command_should_rotate(self, rotate_command, expected):
         rover = MarsRover()
