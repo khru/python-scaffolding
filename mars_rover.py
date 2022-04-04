@@ -24,7 +24,7 @@ class Command(Enum):
 
 
 class CommandList:
-    commands: list[Command] = []
+    commands: list[Command]
 
     def __init__(self, commands: str):
         self.commands = [Command(command) for command in commands]
@@ -54,7 +54,8 @@ class MarsRover:
         self.__row_increment = 1
 
     def execute(self, commands: str):
-        commands_list: list[Command] = [Command(command) for command in commands]
+        # commands_list: list[Command] = [Command(command) for command in commands]
+        commands_list = CommandList(commands).get_all_commands()
         for command in commands_list:
             if command == Command.MOVE:
                 self.__move()
