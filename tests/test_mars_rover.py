@@ -66,10 +66,11 @@ class TestKata(unittest.TestCase):
     ])
     def test_given_a_mars_rover_when_executing_a_unknown_command_should_rise_an_exception(self, unknown_command):
         rover = MarsRover()
-        with self.assertRaises(TypeError) as context:
+        with self.assertRaises(ValueError) as context:
             rover.execute(unknown_command)
 
-        self.assertTrue('Invalid command' in str(context.exception))
+        self.assertTrue('is not a valid' in str(context.exception))
+        self.assertTrue(unknown_command in str(context.exception))
 
 
 

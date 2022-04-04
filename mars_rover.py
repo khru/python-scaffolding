@@ -1,3 +1,6 @@
+from enum import Enum
+
+
 class _Compass:
     __compass = ['N', 'E', 'S', 'W']
 
@@ -14,32 +17,17 @@ class _Compass:
         return self.__compass[self.__orientation]
 
 
-class Command:
-    ROTATE_RIGHT: str = 'R'
-    ROTATE_LEFT: str = 'L'
-    MOVE_FORWARD: str = 'M'
-    __COMMANDS: dict = {
-        ROTATE_LEFT: ROTATE_LEFT,
-        ROTATE_RIGHT: ROTATE_RIGHT,
-        MOVE_FORWARD: MOVE_FORWARD
-    }
-
-    def __init__(self, command: str):
-        if self.__COMMANDS.get(command) is None:
-            raise TypeError('Invalid command used: ' + command)
-
-        self.__command = self.__COMMANDS.get(command)
-
-    def __eq__(self, other: str):
-        return self.__command == other
+class Command(Enum):
+    RIGHT: str = 'R'
+    LEFT: str = 'L'
+    MOVE: str = 'M'
 
 
 class CommandList:
     commands: list[Command] = []
 
     def __init__(self, commands: str):
-        for command in commands:
-            self.commands.append(Command(command))
+        self.commands = [Command(command) for command in commands]
 
     def get_all_commands(self) -> list[Command]:
         return self.commands
@@ -47,30 +35,30 @@ class CommandList:
 
 class MarsRover:
     __PLATEAU_SIZE = 10
+    __COLUMN_INCREMENT: int = 1
+    __ROW_INCREMENT: int = 0
 
     def __init__(self):
         self.__compass = _Compass()
         self.__column: int = 0
-        self.__column_increment: int = 1
         self.__row: int = 0
-        self.__row_increment: int = 0
 
     def __move(self):
-        self.__column = ((self.__column + self.__column_increment) % self.__PLATEAU_SIZE)
-        self.__row = ((self.__row + self.__row_increment) % self.__PLATEAU_SIZE)
+        self.__column = ((self.__column + self.__COLUMN_INCREMENT) % self.__PLATEAU_SIZE)
+        self.__row = ((self.__row + self.__ROW_INCREMENT) % self.__PLATEAU_SIZE)
 
     def __rotate_right(self):
         self.__compass.rotate_right()
-        self.__column_increment = 0
-        self.__row_increment = 1
+        self.__COLUMN_INCREMENT = 0
+        self.__ROW_INCREMENT = 1
 
     def execute(self, commands: str):
-        for str_command in commands:
-            command = Command(str_command)
-            if command == Command.MOVE_FORWARD:
+        commands_list: list[Command] = [Command(command) for command in commands]
+        for command in commands_list:
+            if command == Command.MOVE:
                 self.__move()
-            if command == Command.ROTATE_LEFT:
+            if command == Command.LEFT:
                 self.__compass.rotate_left()
-            if command == Command.ROTATE_RIGHT:
+            if command == Command.RIGHT:
                 self.__rotate_right()
         return str(self.__row) + ':' + str(self.__column) + ':' + self.__compass.orientation()
