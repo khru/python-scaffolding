@@ -35,17 +35,18 @@ class CommandList:
 
 class MarsRover:
 
-    def __init__(self, plateau_size: int = 10):
+    def __init__(self, plateau_column_size: int = 10, plateau_row_size: int = 10):
         self.__compass = _Compass()
         self.__column: int = 0
         self.__column_increment: int = 1
         self.__row: int = 0
         self.__row_increment: int = 0
-        self.__plateau_size = plateau_size
+        self.__plateau_column_size = plateau_column_size
+        self.__plateau_row_size = plateau_row_size
 
     def __move(self):
-        self.__column = ((self.__column + self.__column_increment) % self.__plateau_size)
-        self.__row = ((self.__row + self.__row_increment) % self.__plateau_size)
+        self.__column = ((self.__column + self.__column_increment) % self.__plateau_column_size)
+        self.__row = ((self.__row + self.__row_increment) % self.__plateau_row_size)
 
     def __rotate_right(self):
         self.__compass.rotate_right()
