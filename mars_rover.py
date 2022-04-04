@@ -35,22 +35,22 @@ class CommandList:
 
 class MarsRover:
     __PLATEAU_SIZE = 10
-    __COLUMN_INCREMENT: int = 1
-    __ROW_INCREMENT: int = 0
 
     def __init__(self):
         self.__compass = _Compass()
         self.__column: int = 0
+        self.__column_increment: int = 1
         self.__row: int = 0
+        self.__row_increment: int = 0
 
     def __move(self):
-        self.__column = ((self.__column + self.__COLUMN_INCREMENT) % self.__PLATEAU_SIZE)
-        self.__row = ((self.__row + self.__ROW_INCREMENT) % self.__PLATEAU_SIZE)
+        self.__column = ((self.__column + self.__column_increment) % self.__PLATEAU_SIZE)
+        self.__row = ((self.__row + self.__row_increment) % self.__PLATEAU_SIZE)
 
     def __rotate_right(self):
         self.__compass.rotate_right()
-        self.__COLUMN_INCREMENT = 0
-        self.__ROW_INCREMENT = 1
+        self.__column_increment = 0
+        self.__row_increment = 1
 
     def execute(self, commands: str):
         commands_list: list[Command] = [Command(command) for command in commands]
