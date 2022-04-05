@@ -55,8 +55,7 @@ class MarsRover:
 
     def execute(self, commands: str):
         # commands_list: list[Command] = [Command(command) for command in commands]
-        commands_list = CommandList(commands).get_all_commands()
-        for command in commands_list:
+        for command in CommandList(commands).get_all_commands():
             if command == Command.MOVE:
                 self.__move()
             if command == Command.LEFT:
