@@ -30,6 +30,10 @@ class Rover(ABC):
     def rotate_left(self):
         pass
 
+    @abstractmethod
+    def print_status(self):
+        pass
+
 class MarsRover(Rover):
 
     def __init__(self, plateau_column_size: int = 10, plateau_row_size: int = 10):
@@ -68,23 +72,23 @@ class Command(ABC):
         pass
 
 class Move(Command):
-    def __init__(self, mars_rover: MarsRover):
-        self.__mars_rover = mars_rover
+    def __init__(self, rover: Rover):
+        self.__mars_rover = rover
 
     def __call__(self):
         self.__mars_rover.move()
 
 
 class RotateLeft(Command):
-    def __init__(self, mars_rover: MarsRover):
-        self.__mars_rover = mars_rover
+    def __init__(self, rover: Rover):
+        self.__mars_rover = rover
 
     def __call__(self):
         self.__mars_rover.rotate_left()
 
 class RotateRight(Command):
-    def __init__(self, mars_rover: MarsRover):
-        self.__mars_rover = mars_rover
+    def __init__(self, rover: Rover):
+        self.__mars_rover = rover
 
     def __call__(self):
         self.__mars_rover.rotate_right()
@@ -104,8 +108,7 @@ class RoverCommandFactory:
             return Move(self.__rover)
         if command == CommandSymbol.LEFT:
             return RotateLeft(self.__rover)
-        if command == CommandSymbol.RIGHT:
-            return RotateRight(self.__rover)
+        return RotateRight(self.__rover)
 
 class RoverControl:
 
