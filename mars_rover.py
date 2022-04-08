@@ -19,7 +19,7 @@ class _Compass:
 
 class Command(Enum):
     RIGHT: str = 'R'
-    LEFT: str = 'L'
+
 
 class CommandList:
     commands: list[Command]
@@ -27,6 +27,8 @@ class CommandList:
     def __create_command(self, command: str, mars_rover):
         if command == 'M':
             return Move(mars_rover)
+        if command == 'L':
+            return RotateLeft(mars_rover)
         return Command(command)
 
     def __init__(self, commands: str, mars_rover):
@@ -56,16 +58,20 @@ class MarsRover:
         self.__column_increment = 0
         self.__row_increment = 1
 
+    def rotate_left(self):
+        self.__compass.rotate_left()
+
     def execute(self, commands: str):
         # commands_list: list[Command] = [Command(command) for command in commands]
         for command in CommandList(commands, self).get_all_commands():
             if isinstance(command, Move):
                 command()
-            if command == Command.LEFT:
+            if isinstance(command, RotateLeft):
                 self.__compass.rotate_left()
             if command == Command.RIGHT:
                 self.__rotate_right()
         return str(self.__row) + ':' + str(self.__column) + ':' + self.__compass.orientation()
+
 
 class Move:
     def __init__(self, mars_rover: MarsRover):
@@ -73,3 +79,11 @@ class Move:
 
     def __call__(self):
         self.__mars_rover.move()
+
+
+class RotateLeft:
+    def __init__(self, mars_rover: MarsRover):
+        self.__mars_rover = mars_rover
+
+    def __call__(self):
+        self.__mars_rover.rotate_left()
