@@ -64,10 +64,8 @@ class MarsRover:
     def execute(self, commands: str):
         # commands_list: list[Command] = [Command(command) for command in commands]
         for command in CommandList(commands, self).get_all_commands():
-            if isinstance(command, Move):
+            if isinstance(command, Move) or isinstance(command, RotateLeft):
                 command()
-            if isinstance(command, RotateLeft):
-                self.__compass.rotate_left()
             if command == Command.RIGHT:
                 self.__rotate_right()
         return str(self.__row) + ':' + str(self.__column) + ':' + self.__compass.orientation()
