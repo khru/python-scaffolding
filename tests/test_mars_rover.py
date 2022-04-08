@@ -1,10 +1,14 @@
 import unittest
 
 from parameterized import parameterized
-from mars_rover import MarsRover
+from mars_rover import RoverControl, MarsRover, RoverCommandFactory
 
 
 class TestKata(unittest.TestCase):
+    
+    def build_rover_control(self) -> RoverControl:
+        mars_rover = MarsRover()
+        return RoverControl(mars_rover, RoverCommandFactory(mars_rover))
 
     @parameterized.expand([
         ["", "0:0:N", ],
@@ -14,8 +18,8 @@ class TestKata(unittest.TestCase):
         ["MMMMMMMMMM", "0:0:N", ],
     ])
     def test_given_a_mars_rover_when_executing_a_move_command_should_move(self, command, expected):
-        rover = MarsRover()
-        state = rover.execute(command)
+        rover_control = self.build_rover_control()
+        state = rover_control.execute(command)
         self.assertEqual(expected, state)
 
     @parameterized.expand([
@@ -27,8 +31,8 @@ class TestKata(unittest.TestCase):
     ])
     def test_given_a_mars_rover_when_executing_a_right_rotate_command_should_rotate(self, rotate_right_command,
                                                                                     expected):
-        rover = MarsRover()
-        state = rover.execute(rotate_right_command)
+        rover_control = self.build_rover_control()
+        state = rover_control.execute(rotate_right_command)
         self.assertEqual(expected, state)
 
     @parameterized.expand([
@@ -39,8 +43,8 @@ class TestKata(unittest.TestCase):
         ["LLLLL", "0:0:W", ],
     ])
     def test_given_a_mars_rover_when_executing_a_left_rotate_command_should_rotate(self, rotate_left_command, expected):
-        rover = MarsRover()
-        state = rover.execute(rotate_left_command)
+        rover_control = self.build_rover_control()
+        state = rover_control.execute(rotate_left_command)
         self.assertEqual(expected, state)
 
     @parameterized.expand([
@@ -55,8 +59,8 @@ class TestKata(unittest.TestCase):
     ])
     def test_given_a_mars_rover_when_executing_a_mixed_rotate_command_should_rotate(self, mixed_rotate_command,
                                                                                     expected):
-        rover = MarsRover()
-        state = rover.execute(mixed_rotate_command)
+        rover_control = self.build_rover_control()
+        state = rover_control.execute(mixed_rotate_command)
         self.assertEqual(expected, state)
 
     @parameterized.expand([
@@ -66,9 +70,9 @@ class TestKata(unittest.TestCase):
         ["v", ],
     ])
     def test_given_a_mars_rover_when_executing_a_unknown_command_should_rise_an_exception(self, unknown_command):
-        rover = MarsRover()
+        rover_control =  self.build_rover_control()
         with self.assertRaises(ValueError) as context:
-            rover.execute(unknown_command)
+            rover_control.execute(unknown_command)
 
         self.assertTrue('is not a valid' in str(context.exception))
         self.assertTrue(unknown_command in str(context.exception))
@@ -78,10 +82,11 @@ class TestKata(unittest.TestCase):
         ["MMMMMMMMMMMMMMMMMMMM", "0:0:N", ],
     ])
     def test_given_a_mars_rover_with_a_20_x_1_plateau_when_executing_a_mixed_rotate_command_should_rotate(self,
-                                                                                                           long_command,
-                                                                                                           expected):
-        rover = MarsRover(20, 1)
-        state = rover.execute(long_command)
+            long_command,
+            expected):
+        plateau_mars_rover = MarsRover(20, 1)                                                                                                  
+        rover_control = RoverControl(plateau_mars_rover, RoverCommandFactory(plateau_mars_rover))
+        state = rover_control.execute(long_command)
         self.assertEqual(expected, state)
 
     @parameterized.expand([
@@ -89,10 +94,11 @@ class TestKata(unittest.TestCase):
         ["RMMMMMMMMMMMMMMMMMMMM", "0:0:E", ],
     ])
     def test_given_a_mars_rover_with_a_1_x_20_plateau_when_executing_a_mixed_rotate_command_should_rotate(self,
-                                                                                                           long_command,
-                                                                                                           expected):
-        rover = MarsRover(1, 20)
-        state = rover.execute(long_command)
+            long_command,
+            expected):
+        plateau_mars_rover = MarsRover(1, 20)
+        rover_control = RoverControl(plateau_mars_rover, RoverCommandFactory(plateau_mars_rover))
+        state = rover_control.execute(long_command)
         self.assertEqual(expected, state)
 
 if __name__ == '__main__':

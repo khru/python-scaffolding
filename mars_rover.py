@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from enum import Enum
 
 
@@ -16,29 +17,20 @@ class _Compass:
     def orientation(self):
         return self.__compass[self.__orientation]
 
+class Rover(ABC):
+    @abstractmethod
+    def move(self):
+        pass
 
-class Command(Enum):
-    RIGHT: str = 'R'
+    @abstractmethod
+    def rotate_right(self):
+        pass
 
+    @abstractmethod
+    def rotate_left(self):
+        pass
 
-class CommandList:
-    commands: list[Command]
-
-    def __create_command(self, command: str, mars_rover):
-        if command == 'M':
-            return Move(mars_rover)
-        if command == 'L':
-            return RotateLeft(mars_rover)
-        return Command(command)
-
-    def __init__(self, commands: str, mars_rover):
-        self.commands = [self.__create_command(command, mars_rover) for command in commands]
-
-    def get_all_commands(self) -> list[Command]:
-        return self.commands
-
-
-class MarsRover:
+class MarsRover(Rover):
 
     def __init__(self, plateau_column_size: int = 10, plateau_row_size: int = 10):
         self.__compass = _Compass()
@@ -53,7 +45,7 @@ class MarsRover:
         self.__column = ((self.__column + self.__column_increment) % self.__plateau_column_size)
         self.__row = ((self.__row + self.__row_increment) % self.__plateau_row_size)
 
-    def __rotate_right(self):
+    def rotate_right(self):
         self.__compass.rotate_right()
         self.__column_increment = 0
         self.__row_increment = 1
@@ -61,17 +53,21 @@ class MarsRover:
     def rotate_left(self):
         self.__compass.rotate_left()
 
-    def execute(self, commands: str):
-        # commands_list: list[Command] = [Command(command) for command in commands]
-        for command in CommandList(commands, self).get_all_commands():
-            if isinstance(command, Move) or isinstance(command, RotateLeft):
-                command()
-            if command == Command.RIGHT:
-                self.__rotate_right()
+    def print_status(self) -> str:
         return str(self.__row) + ':' + str(self.__column) + ':' + self.__compass.orientation()
 
+    #def execute(self, commands: str) -> str:
+    #    mars_rover_control = MarsRoverControl(self)
+    #    mars_rover_control.execute(commands)
+    #    return self.print_status()
 
-class Move:
+class Command(ABC):
+    
+    @abstractmethod
+    def __call__(self):
+        pass
+
+class Move(Command):
     def __init__(self, mars_rover: MarsRover):
         self.__mars_rover = mars_rover
 
@@ -79,9 +75,44 @@ class Move:
         self.__mars_rover.move()
 
 
-class RotateLeft:
+class RotateLeft(Command):
     def __init__(self, mars_rover: MarsRover):
         self.__mars_rover = mars_rover
 
     def __call__(self):
         self.__mars_rover.rotate_left()
+
+class RotateRight(Command):
+    def __init__(self, mars_rover: MarsRover):
+        self.__mars_rover = mars_rover
+
+    def __call__(self):
+        self.__mars_rover.rotate_right()
+
+class CommandSymbol(Enum):
+    MOVE = 'M'
+    LEFT = 'L'
+    RIGHT = 'R'
+
+class RoverCommandFactory:
+
+    def __init__(self, rover: Rover):
+        self.__rover = rover
+
+    def __call__(self, command: CommandSymbol) -> Command:
+        if command == CommandSymbol.MOVE:
+            return Move(self.__rover)
+        if command == CommandSymbol.LEFT:
+            return RotateLeft(self.__rover)
+        if command == CommandSymbol.RIGHT:
+            return RotateRight(self.__rover)
+
+class RoverControl:
+
+    def __init__(self, rover: Rover, rover_command_factory: RoverCommandFactory):
+        self.__rover = rover
+        self.__rover_command_factory = rover_command_factory
+
+    def execute(self, commands) -> str:
+        [self.__rover_command_factory(CommandSymbol(command))() for command in commands]
+        return self.__rover.print_status()
