@@ -17,6 +17,7 @@ class _Compass:
     def orientation(self):
         return self.__compass[self.__orientation]
 
+
 class Rover(ABC):
     @abstractmethod
     def move(self):
@@ -34,14 +35,15 @@ class Rover(ABC):
     def print_status(self):
         pass
 
+
 class MarsRover(Rover):
 
     def __init__(self, plateau_column_size: int = 10, plateau_row_size: int = 10):
         self.__compass = _Compass()
         self.__column: int = 0
-        self.__column_increment: int = 1
-        self.__row: int = 0
         self.__row_increment: int = 0
+        self.__row: int = 0
+        self.__column_increment: int = 1
         self.__plateau_column_size = plateau_column_size
         self.__plateau_row_size = plateau_row_size
 
@@ -51,25 +53,29 @@ class MarsRover(Rover):
 
     def rotate_right(self):
         self.__compass.rotate_right()
-        self.__column_increment = 0
         self.__row_increment = 1
+        self.__column_increment = 0
 
     def rotate_left(self):
         self.__compass.rotate_left()
+        self.__row_increment = -1
+        self.__column_increment = 0
 
     def print_status(self) -> str:
         return str(self.__row) + ':' + str(self.__column) + ':' + self.__compass.orientation()
 
-    #def execute(self, commands: str) -> str:
+    # def execute(self, commands: str) -> str:
     #    mars_rover_control = MarsRoverControl(self)
     #    mars_rover_control.execute(commands)
     #    return self.print_status()
 
+
 class Command(ABC):
-    
+
     @abstractmethod
     def __call__(self):
         pass
+
 
 class Move(Command):
     def __init__(self, rover: Rover):
@@ -86,6 +92,7 @@ class RotateLeft(Command):
     def __call__(self):
         self.__mars_rover.rotate_left()
 
+
 class RotateRight(Command):
     def __init__(self, rover: Rover):
         self.__mars_rover = rover
@@ -93,10 +100,12 @@ class RotateRight(Command):
     def __call__(self):
         self.__mars_rover.rotate_right()
 
+
 class CommandSymbol(Enum):
     MOVE = 'M'
     LEFT = 'L'
     RIGHT = 'R'
+
 
 class RoverCommandFactory:
 
@@ -109,6 +118,7 @@ class RoverCommandFactory:
         if command == CommandSymbol.LEFT:
             return RotateLeft(self.__rover)
         return RotateRight(self.__rover)
+
 
 class RoverControl:
 

@@ -90,6 +90,18 @@ class TestKata(unittest.TestCase):
         self.assertEqual(expected, state)
 
     @parameterized.expand([
+        ["LM", "9:0:W", ],
+        ["LMM", "9:0:W", ],
+    ])
+    def test_given_a_mars_rover_with_a_20_x_1_plateau_when_executing_a_mixed_rotate_command_should_rotate(self,
+                                                                                                          long_command,
+                                                                                                          expected):
+        plateau_mars_rover = MarsRover()
+        rover_control = RoverControl(plateau_mars_rover, RoverCommandFactory(plateau_mars_rover))
+        state = rover_control.execute(long_command)
+        self.assertEqual(expected, state)
+
+    @parameterized.expand([
         ["RMMMMMMMMMMMMMMMMMMM", "19:0:E", ],
         ["RMMMMMMMMMMMMMMMMMMMM", "0:0:E", ],
     ])
