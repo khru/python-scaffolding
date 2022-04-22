@@ -38,12 +38,15 @@ class Rover(ABC):
 
 class MarsRover(Rover):
 
+    __COS90 = 0
+    __SIN90 = 1
+
     def __init__(self, plateau_column_size: int = 10, plateau_row_size: int = 10):
         self.__compass = _Compass()
         self.__column: int = 0
-        self.__row_increment: int = 0
         self.__row: int = 0
-        self.__column_increment: int = 1
+        self.__row_increment: int = self.__COS90
+        self.__column_increment: int = self.__SIN90
         self.__plateau_column_size = plateau_column_size
         self.__plateau_row_size = plateau_row_size
 
@@ -53,8 +56,8 @@ class MarsRover(Rover):
 
     def rotate_right(self):
         self.__compass.rotate_right()
-        self.__row_increment = 1
-        self.__column_increment = 0
+        self.__row_increment = self.__COS90 * self.__row_increment + self.__SIN90 * self.__column_increment
+        self.__column_increment = -self.__SIN90 * self.__row_increment + self.__COS90 * self.__column_increment
 
     def rotate_left(self):
         self.__compass.rotate_left()
